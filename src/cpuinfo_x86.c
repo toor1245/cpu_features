@@ -1330,6 +1330,41 @@ static void ParseCpuId(const uint32_t max_cpuid_leaf, X86Info* info,
     features->ssse3 = GetDarwinSysCtlByName("hw.optional.supplementalsse3");
     features->sse4_1 = GetDarwinSysCtlByName("hw.optional.sse4_1");
     features->sse4_2 = GetDarwinSysCtlByName("hw.optional.sse4_2");
+#elif defined(CPU_FEATURES_OS_FREEBSD)
+    // Handling FreeBSD platform through parsing /var/run/dmesg.boot.
+    const int fd = CpuFeatures_OpenFile("/var/run/dmesg.boot");
+    if (fd >= 0) {
+      StackLineReader reader;
+      StackLineReader_Initialize(&reader, fd);
+      for (;;) {
+        const LineResult result = StackLineReader_NextLine(&reader);
+        if (CpuFeatures_StringView_StartsWith(result.line,
+                                              str("  Features=")) ||
+            CpuFeatures_StringView_StartsWith(result.line,
+                                              str("  Features2="))) {
+          // replace '<', '>' and ',' with space so we can search by word.
+          for (size_t i = 0; i < result.line.size; ++i) {
+            if (result.line[i] == '<' || result.line[i] == '>' ||
+                result.line[i] == ',')
+              result.line[i] == ' ';
+          }
+          if (CpuFeatures_StringView_HasWord(value, "SSE"))
+            features->sse = true;
+          if (CpuFeatures_StringView_HasWord(value, "SSE2"))
+            features->sse2 = true;
+          if (CpuFeatures_StringView_HasWord(value, "SSE3"))
+            features->sse3 = true;
+          if (CpuFeatures_StringView_HasWord(value, "SSSE3"))
+            features->ssse3 = true;
+          if (CpuFeatures_StringView_HasWord(value, "SSE4.1"))
+            features->sse4_1 = true;
+          if (CpuFeatures_StringView_HasWord(value, "SSE4.2"))
+            features->sse4_2 = true;
+        }
+        if (result.eof) break;
+      }
+    }
+    CpuFeatures_CloseFile(fd);
 #elif defined(CPU_FEATURES_OS_LINUX_OR_ANDROID)
     // Handling Linux platform through /proc/cpuinfo.
     const int fd = CpuFeatures_OpenFile("/proc/cpuinfo");
