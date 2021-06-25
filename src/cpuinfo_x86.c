@@ -1342,7 +1342,10 @@ static void ParseCpuId(const uint32_t max_cpuid_leaf, X86Info* info,
                                               str("  Features=")) ||
             CpuFeatures_StringView_StartsWith(result.line,
                                               str("  Features2="))) {
-          // replace '<', '>' and ',' with space so we can search by word.
+          // Lines of interests are of the following form:
+          // "  Features=0x1783fbff<PSE36,MMX,FXSR,SSE,SSE2,HTT>"
+          // We replace '<', '>' and ',' with space so we can search by
+          // whitespace separated word.
           for (size_t i = 0; i < result.line.size; ++i) {
             if (result.line[i] == '<' || result.line[i] == '>' ||
                 result.line[i] == ',')
