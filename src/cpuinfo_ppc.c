@@ -130,23 +130,29 @@ PPCInfo GetPPCInfo(void) {
   return info;
 }
 
+PPCPlatformTypeStrings kEmptyPPCPlatformTypeStrings;
+
+PPCPlatformTypeStrings CpuFeatures_GetPlatformType(void) {
+  PPCPlatformTypeStrings type = kEmptyPPCPlatformTypeStrings;
+  char* platform = (char*)GetHardwareCapabilitiesFor(AT_PLATFORM);
+  char* base_platform = (char*)GetHardwareCapabilitiesFor(AT_BASE_PLATFORM);
+
+  if (platform != NULL)
+    CpuFeatures_StringView_CopyString(str(platform), type.platform,
+                                      sizeof(type.platform));
+  if (base_platform != NULL)
+    CpuFeatures_StringView_CopyString(str(base_platform), type.base_platform,
+                                      sizeof(type.base_platform));
+  return type;
+}
+
 static const PPCPlatformStrings kEmptyPPCPlatformStrings;
 
 PPCPlatformStrings GetPPCPlatformStrings(void) {
   PPCPlatformStrings strings = kEmptyPPCPlatformStrings;
 
   FillProcCpuInfoData(&strings);
-
-  char* platform = (char*)GetHardwareCapabilitiesFor(AT_PLATFORM);
-  char* base_platform = (char*)GetHardwareCapabilitiesFor(AT_BASE_PLATFORM);
-
-  if (platform != NULL)
-    CpuFeatures_StringView_CopyString(str(platform), strings.platform,
-                                      sizeof(strings.platform));
-  if (base_platform != NULL)
-    CpuFeatures_StringView_CopyString(str(base_platform), strings.base_platform,
-                                      sizeof(strings.base_platform));
-
+  strings.type = CpuFeatures_GetPlatformType();
   return strings;
 }
 
