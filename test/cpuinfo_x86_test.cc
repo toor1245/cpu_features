@@ -336,12 +336,12 @@ TEST_F(CpuidX86Test, Nehalem) {
   g_fake_cpu->SetWindowsIsProcessorFeaturePresent(
       PF_SSE3_INSTRUCTIONS_AVAILABLE);
 #elif defined(CPU_FEATURES_OS_DARWIN)
-  g_fake_cpu->SetSysCtlByName("hw.optional.sse");
-  g_fake_cpu->SetSysCtlByName("hw.optional.sse2");
-  g_fake_cpu->SetSysCtlByName("hw.optional.sse3");
-  g_fake_cpu->SetSysCtlByName("hw.optional.supplementalsse3");
-  g_fake_cpu->SetSysCtlByName("hw.optional.sse4_1");
-  g_fake_cpu->SetSysCtlByName("hw.optional.sse4_2");
+  g_fake_cpu->GetDarwinSysCtlByName("hw.optional.sse");
+  g_fake_cpu->GetDarwinSysCtlByName("hw.optional.sse2");
+  g_fake_cpu->GetDarwinSysCtlByName("hw.optional.sse3");
+  g_fake_cpu->GetDarwinSysCtlByName("hw.optional.supplementalsse3");
+  g_fake_cpu->GetDarwinSysCtlByName("hw.optional.sse4_1");
+  g_fake_cpu->GetDarwinSysCtlByName("hw.optional.sse4_2");
 #elif defined(CPU_FEATURES_OS_FREEBSD)
   auto& fs = GetEmptyFilesystem();
   fs.CreateFile("/var/run/dmesg.boot", R"(
@@ -421,12 +421,12 @@ TEST_F(CpuidX86Test, Atom) {
   g_fake_cpu->SetWindowsIsProcessorFeaturePresent(
       PF_SSE3_INSTRUCTIONS_AVAILABLE);
 #elif defined(CPU_FEATURES_OS_DARWIN)
-  g_fake_cpu->SetSysCtlByName("hw.optional.sse");
-  g_fake_cpu->SetSysCtlByName("hw.optional.sse2");
-  g_fake_cpu->SetSysCtlByName("hw.optional.sse3");
-  g_fake_cpu->SetSysCtlByName("hw.optional.supplementalsse3");
-  g_fake_cpu->SetSysCtlByName("hw.optional.sse4_1");
-  g_fake_cpu->SetSysCtlByName("hw.optional.sse4_2");
+  g_fake_cpu->GetDarwinSysCtlByName("hw.optional.sse");
+  g_fake_cpu->GetDarwinSysCtlByName("hw.optional.sse2");
+  g_fake_cpu->GetDarwinSysCtlByName("hw.optional.sse3");
+  g_fake_cpu->GetDarwinSysCtlByName("hw.optional.supplementalsse3");
+  g_fake_cpu->GetDarwinSysCtlByName("hw.optional.sse4_1");
+  g_fake_cpu->GetDarwinSysCtlByName("hw.optional.sse4_2");
 #elif defined(CPU_FEATURES_OS_FREEBSD)
   fs.CreateFile("/var/run/dmesg.boot", R"(
   ---<<BOOT>>---
@@ -501,7 +501,7 @@ TEST_F(CpuidX86Test, P3) {
   g_fake_cpu->SetWindowsIsProcessorFeaturePresent(
       PF_XMMI_INSTRUCTIONS_AVAILABLE);
 #elif defined(CPU_FEATURES_OS_DARWIN)
-  g_fake_cpu->SetSysCtlByName("hw.optional.sse");
+  g_fake_cpu->GetDarwinSysCtlByName("hw.optional.sse");
 #elif defined(CPU_FEATURES_OS_FREEBSD)
   fs.CreateFile("/var/run/dmesg.boot", R"(
   ---<<BOOT>>---
