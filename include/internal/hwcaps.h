@@ -176,6 +176,11 @@ typedef struct {
   unsigned long hwcaps2;
 } HardwareCapabilities;
 
+// Retrieves hardware capabilities by first trying to call getauxval, if not
+// available falls back to reading "/proc/self/auxv".
+unsigned long CpuFeatures_GetHardwareCapabilitiesFor(uint32_t type);
+
+// Calls CpuFeatures_GetHardwareCapabilitiesFor with AT_HWCAP and AT_HWCAP2.
 HardwareCapabilities CpuFeatures_GetHardwareCapabilities(void);
 bool CpuFeatures_IsHwCapsSet(const HardwareCapabilities hwcaps_mask,
                              const HardwareCapabilities hwcaps);

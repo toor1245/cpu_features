@@ -139,9 +139,7 @@ static uint32_t GetElfHwcapFromProcSelfAuxv(uint32_t hwcap_type) {
   return result;
 }
 
-// Retrieves hardware capabilities by first trying to call getauxval, if not
-// available falls back to reading "/proc/self/auxv".
-static unsigned long GetHardwareCapabilitiesFor(uint32_t type) {
+unsigned long CpuFeatures_GetHardwareCapabilitiesFor(uint32_t type) {
   unsigned long hwcaps = GetElfHwcapFromGetauxval(type);
   if (!hwcaps) {
     D("Parsing /proc/self/auxv to extract ELF hwcaps!\n");
@@ -152,8 +150,8 @@ static unsigned long GetHardwareCapabilitiesFor(uint32_t type) {
 
 HardwareCapabilities CpuFeatures_GetHardwareCapabilities(void) {
   HardwareCapabilities capabilities;
-  capabilities.hwcaps = GetHardwareCapabilitiesFor(AT_HWCAP);
-  capabilities.hwcaps2 = GetHardwareCapabilitiesFor(AT_HWCAP2);
+  capabilities.hwcaps = CpuFeatures_GetHardwareCapabilitiesFor(AT_HWCAP);
+  capabilities.hwcaps2 = CpuFeatures_GetHardwareCapabilitiesFor(AT_HWCAP2);
   return capabilities;
 }
 

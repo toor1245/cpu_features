@@ -134,8 +134,8 @@ PPCPlatformTypeStrings kEmptyPPCPlatformTypeStrings;
 
 PPCPlatformTypeStrings CpuFeatures_GetPlatformType(void) {
   PPCPlatformTypeStrings type = kEmptyPPCPlatformTypeStrings;
-  char* platform = (char*)GetHardwareCapabilitiesFor(AT_PLATFORM);
-  char* base_platform = (char*)GetHardwareCapabilitiesFor(AT_BASE_PLATFORM);
+  char* platform = (char*)CpuFeatures_GetHardwareCapabilitiesFor(AT_PLATFORM);
+  char* base_platform = (char*)CpuFeatures_GetHardwareCapabilitiesFor(AT_BASE_PLATFORM);
 
   if (platform != NULL)
     CpuFeatures_StringView_CopyString(str(platform), type.platform,
