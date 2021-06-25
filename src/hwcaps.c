@@ -35,7 +35,6 @@ bool CpuFeatures_IsHwCapsSet(const HardwareCapabilities hwcaps_mask,
 #ifdef CPU_FEATURES_TEST
 // In test mode, hwcaps_for_testing will define the following functions.
 HardwareCapabilities CpuFeatures_GetHardwareCapabilities(void);
-PlatformType CpuFeatures_GetPlatformType(void);
 #else
 
 // Debug facilities
