@@ -180,8 +180,6 @@ HardwareCapabilities CpuFeatures_GetHardwareCapabilities(void);
 bool CpuFeatures_IsHwCapsSet(const HardwareCapabilities hwcaps_mask,
                              const HardwareCapabilities hwcaps);
 
-PlatformType CpuFeatures_GetPlatformType(void);
-
 CPU_FEATURES_END_CPP_NAMESPACE
 
 #endif  // CPU_FEATURES_INCLUDE_INTERNAL_HWCAPS_H_
