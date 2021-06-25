@@ -17,7 +17,6 @@
 
 #include "cpu_features_cache_info.h"
 #include "cpu_features_macros.h"
-#include "internal/hwcaps.h"
 
 CPU_FEATURES_START_CPP_NAMESPACE
 
@@ -73,6 +72,11 @@ typedef struct {
 
 // This function is guaranteed to be malloc, memset and memcpy free.
 PPCInfo GetPPCInfo(void);
+
+typedef struct {
+  char platform[64];       // 0 terminated string
+  char base_platform[64];  // 0 terminated string
+} PlatformType;
 
 typedef struct {
   char platform[64];  // 0 terminated string

@@ -54,11 +54,6 @@ PlatformType CpuFeatures_GetPlatformType(void);
 // Implementation of GetElfHwcapFromGetauxval
 ////////////////////////////////////////////////////////////////////////////////
 
-#define AT_HWCAP 16
-#define AT_HWCAP2 26
-#define AT_PLATFORM 15
-#define AT_BASE_PLATFORM 24
-
 #if defined(HAVE_STRONG_GETAUXVAL)
 #include <sys/auxv.h>
 static unsigned long GetElfHwcapFromGetauxval(uint32_t hwcap_type) {
@@ -161,22 +156,6 @@ HardwareCapabilities CpuFeatures_GetHardwareCapabilities(void) {
   capabilities.hwcaps = GetHardwareCapabilitiesFor(AT_HWCAP);
   capabilities.hwcaps2 = GetHardwareCapabilitiesFor(AT_HWCAP2);
   return capabilities;
-}
-
-PlatformType kEmptyPlatformType;
-
-PlatformType CpuFeatures_GetPlatformType(void) {
-  PlatformType type = kEmptyPlatformType;
-  char *platform = (char *)GetHardwareCapabilitiesFor(AT_PLATFORM);
-  char *base_platform = (char *)GetHardwareCapabilitiesFor(AT_BASE_PLATFORM);
-
-  if (platform != NULL)
-    CpuFeatures_StringView_CopyString(str(platform), type.platform,
-                                      sizeof(type.platform));
-  if (base_platform != NULL)
-    CpuFeatures_StringView_CopyString(str(base_platform), type.base_platform,
-                                      sizeof(type.base_platform));
-  return type;
 }
 
 #endif  // CPU_FEATURES_TEST

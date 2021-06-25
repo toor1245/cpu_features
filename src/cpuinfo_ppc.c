@@ -20,6 +20,7 @@
 
 #include "internal/bit_utils.h"
 #include "internal/filesystem.h"
+#include "internal/hwcaps.h"
 #include "internal/stack_line_reader.h"
 #include "internal/string_view.h"
 
@@ -127,6 +128,22 @@ PPCInfo GetPPCInfo(void) {
     }
   }
   return info;
+}
+
+PlatformType kEmptyPlatformType;
+
+PlatformType CpuFeatures_GetPlatformType(void) {
+  PlatformType type = kEmptyPlatformType;
+  char* platform = (char*)GetHardwareCapabilitiesFor(AT_PLATFORM);
+  char* base_platform = (char*)GetHardwareCapabilitiesFor(AT_BASE_PLATFORM);
+
+  if (platform != NULL)
+    CpuFeatures_StringView_CopyString(str(platform), type.platform,
+                                      sizeof(type.platform));
+  if (base_platform != NULL)
+    CpuFeatures_StringView_CopyString(str(base_platform), type.base_platform,
+                                      sizeof(type.base_platform));
+  return type;
 }
 
 static const PPCPlatformStrings kEmptyPPCPlatformStrings;

@@ -27,6 +27,11 @@ CPU_FEATURES_START_CPP_NAMESPACE
 // To avoid depending on the linux kernel we reproduce the architecture specific
 // constants here.
 
+#define AT_HWCAP 16
+#define AT_HWCAP2 26
+#define AT_PLATFORM 15
+#define AT_BASE_PLATFORM 24
+
 // http://elixir.free-electrons.com/linux/latest/source/arch/arm64/include/uapi/asm/hwcap.h
 #define AARCH64_HWCAP_FP (1UL << 0)
 #define AARCH64_HWCAP_ASIMD (1UL << 1)
@@ -174,11 +179,6 @@ typedef struct {
 HardwareCapabilities CpuFeatures_GetHardwareCapabilities(void);
 bool CpuFeatures_IsHwCapsSet(const HardwareCapabilities hwcaps_mask,
                              const HardwareCapabilities hwcaps);
-
-typedef struct {
-  char platform[64];       // 0 terminated string
-  char base_platform[64];  // 0 terminated string
-} PlatformType;
 
 PlatformType CpuFeatures_GetPlatformType(void);
 
