@@ -75,15 +75,11 @@ PPCInfo GetPPCInfo(void);
 
 typedef struct {
   char platform[64];       // 0 terminated string
+  char model[64];          // 0 terminated string
+  char machine[64];        // 0 terminated string
+  char cpu[64];            // 0 terminated string
+  char platform[64];       // 0 terminated string
   char base_platform[64];  // 0 terminated string
-} PlatformType;
-
-typedef struct {
-  char platform[64];  // 0 terminated string
-  char model[64];     // 0 terminated string
-  char machine[64];   // 0 terminated string
-  char cpu[64];       // 0 terminated string
-  PlatformType type;
 } PPCPlatformStrings;
 
 PPCPlatformStrings GetPPCPlatformStrings(void);

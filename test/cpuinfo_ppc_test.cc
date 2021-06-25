@@ -63,8 +63,8 @@ machine         : CHRP IBM,8406-70Y)");
   ASSERT_STREQ(strings.model, "IBM,8406-70Y");
   ASSERT_STREQ(strings.machine, "CHRP IBM,8406-70Y");
   ASSERT_STREQ(strings.cpu, "POWER7 (architected), altivec supported");
-  ASSERT_STREQ(strings.type.platform, "power7");
-  ASSERT_STREQ(strings.type.base_platform, "power8");
+  ASSERT_STREQ(strings.platform, "power7");
+  ASSERT_STREQ(strings.base_platform, "power8");
 }
 
 TEST(CpustringsPPCTest, Firestone) {
