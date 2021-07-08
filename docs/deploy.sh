@@ -22,6 +22,5 @@ git commit -m 'deploy'
 ssh -vT git@github.com
 
 # if you are deploying to https://<USERNAME>.github.io/<REPO>
-git push -f git@github.com:toor1245/cpu_features.git master:gh-pages
-
+git push
 cd -
