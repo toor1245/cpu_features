@@ -2,6 +2,7 @@ import { defineUserConfig } from 'vuepress'
 import type { DefaultThemeOptions } from 'vuepress'
 
 export default defineUserConfig<DefaultThemeOptions>({
+    base: '/cpu_features/',
     themeConfig: {
         logo: 'https://vuejs.org/images/logo.png',
         navbar: [
