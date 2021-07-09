@@ -39,6 +39,9 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
 
+      # download vuepress
+      - name: Download VuePress
+        run: yarn --cwd docs add -D vuepress@next
       # run build script
       - name: Build VuePress site
         run: yarn --cwd docs docs:build
