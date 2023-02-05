@@ -1179,6 +1179,7 @@ TEST_F(CpuidX86Test, AMD_AGENA_CACHE_INFO) {
   EXPECT_EQ(info.levels[3].line_size, 64);
 }
 
+#if !defined(CPU_FEATURES_OS_HAIKU)
 // https://github.com/InstLatx64/InstLatx64/blob/master/GenuineIntel/GenuineIntel00106A1_Nehalem_CPUID.txt
 TEST_F(CpuidX86Test, Nehalem) {
   // Pre AVX cpus don't have xsave
@@ -1257,7 +1258,9 @@ flags           : fpu mmx sse sse2 pni ssse3 sse4_1 sse4_2
   EXPECT_TRUE(info.features.sse4_1);
   EXPECT_TRUE(info.features.sse4_2);
 }
+#endif
 
+#if !defined(CPU_FEATURES_OS_HAIKU)
 // https://github.com/InstLatx64/InstLatx64/blob/master/GenuineIntel/GenuineIntel0030673_Silvermont3_CPUID.txt
 TEST_F(CpuidX86Test, Atom) {
   // Pre AVX cpus don't have xsave
@@ -1336,6 +1339,7 @@ flags           : fpu mmx sse sse2 pni ssse3 sse4_1 sse4_2
   EXPECT_TRUE(info.features.sse4_1);
   EXPECT_TRUE(info.features.sse4_2);
 }
+#endif
 
 // https://www.felixcloutier.com/x86/cpuid#example-3-1--example-of-cache-and-tlb-interpretation
 TEST_F(CpuidX86Test, P4_CacheInfo) {
@@ -1390,6 +1394,7 @@ TEST_F(CpuidX86Test, P4_CacheInfo) {
   EXPECT_EQ(info.levels[4].partitioning, 2);
 }
 
+#if !defined(CPU_FEATURES_OS_HAIKU)
 // https://github.com/InstLatx64/InstLatx64/blob/master/GenuineIntel/GenuineIntel0000673_P3_KatmaiDP_CPUID.txt
 TEST_F(CpuidX86Test, P3) {
   // Pre AVX cpus don't have xsave
@@ -1436,6 +1441,7 @@ flags           : fpu mmx sse
   EXPECT_FALSE(info.features.sse4_1);
   EXPECT_FALSE(info.features.sse4_2);
 }
+#endif
 
 // https://github.com/InstLatx64/InstLatx64/blob/master/GenuineIntel/GenuineIntel0000480_486_CPUID.txt
 TEST_F(CpuidX86Test, INTEL_80486) {

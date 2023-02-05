@@ -53,6 +53,7 @@ if(PROCESSOR_IS_X86)
     ../src/impl_x86_linux_or_android.c
     ../src/impl_x86_macos.c
     ../src/impl_x86_windows.c
+    ../src/impl_x86_haiku.c
   )
   target_compile_definitions(cpuinfo_x86_test PUBLIC CPU_FEATURES_MOCK_CPUID_X86)
   if(APPLE)
