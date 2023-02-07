@@ -227,6 +227,11 @@ endif()
 #
 
 include(GNUInstallDirs)
+if(CMAKE_SYSTEM_NAME MATCHES "Haiku")
+  set(CMAKE_INSTALL_LIBDIR ~/config/non-packaged/lib)
+  set(CMAKE_INSTALL_BINDIR ~/config/non-packaged/bin)
+  set(CMAKE_INSTALL_INCLUDEDIR ~/config/non-packaged/include)
+endif()
 install(TARGETS cpu_features list_cpu_features
   EXPORT CpuFeaturesTargets
   PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/cpu_features
