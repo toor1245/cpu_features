@@ -1,5 +1,3 @@
-// Copyright 2017 Google LLC
-//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -12,23 +10,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "cpu_features_macros.h"
+
+#ifdef CPU_FEATURES_ARCH_MIPS
+#if defined(CPU_FEATURES_OS_LINUX) || defined(CPU_FEATURES_OS_ANDROID)
+
 #include "cpuinfo_mips.h"
 
-#include <assert.h>
+////////////////////////////////////////////////////////////////////////////////
+// Definitions for introspection.
+////////////////////////////////////////////////////////////////////////////////
+#define INTROSPECTION_TABLE                                     \
+  LINE(MIPS_MSA, msa, "msa", MIPS_HWCAP_MSA, 0)                 \
+  LINE(MIPS_EVA, eva, "eva", 0, 0)                              \
+  LINE(MIPS_R6, r6, "r6", MIPS_HWCAP_R6, 0)                     \
+  LINE(MIPS_MIPS16, mips16, "mips16", MIPS_HWCAP_MIPS16, 0)     \
+  LINE(MIPS_MDMX, mdmx, "mdmx", MIPS_HWCAP_MDMX, 0)             \
+  LINE(MIPS_MIPS3D, mips3d, "mips3d", MIPS_HWCAP_MIPS3D, 0)     \
+  LINE(MIPS_SMART, smart, "smartmips", MIPS_HWCAP_SMARTMIPS, 0) \
+  LINE(MIPS_DSP, dsp, "dsp", MIPS_HWCAP_DSP, 0)
+#define INTROSPECTION_PREFIX Mips
+#define INTROSPECTION_ENUM_PREFIX MIPS
+#include "define_introspection_and_hwcaps.inl"
+
+////////////////////////////////////////////////////////////////////////////////
+// Implementation.
+////////////////////////////////////////////////////////////////////////////////
 
 #include "internal/filesystem.h"
 #include "internal/hwcaps.h"
 #include "internal/stack_line_reader.h"
 #include "internal/string_view.h"
-
-// Generation of feature's getters/setters functions and kGetters, kSetters,
-// kCpuInfoFlags and kHardwareCapabilities global tables.
-#define DEFINE_TABLE_FEATURES                      \
-  FEATURE(MIPS_MSA, msa, "msa", MIPS_HWCAP_MSA, 0) \
-  FEATURE(MIPS_EVA, eva, "eva", 0, 0)              \
-  FEATURE(MIPS_R6, r6, "r6", MIPS_HWCAP_R6, 0)
-#define DEFINE_TABLE_FEATURE_TYPE MipsFeatures
-#include "define_tables.h"
 
 static bool HandleMipsLine(const LineResult result,
                            MipsFeatures* const features) {
@@ -37,8 +49,8 @@ static bool HandleMipsLine(const LineResult result,
   if (CpuFeatures_StringView_GetAttributeKeyValue(result.line, &key, &value)) {
     if (CpuFeatures_StringView_IsEquals(key, str("ASEs implemented"))) {
       for (size_t i = 0; i < MIPS_LAST_; ++i) {
-        kSetters[i](features,
-                    CpuFeatures_StringView_HasWord(value, kCpuInfoFlags[i]));
+        kSetters[i](features, CpuFeatures_StringView_HasWord(
+                                  value, kCpuInfoFlags[i], ' '));
       }
     }
   }
@@ -77,16 +89,5 @@ MipsInfo GetMipsInfo(void) {
   return info;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// Introspection functions
-
-int GetMipsFeaturesEnumValue(const MipsFeatures* features,
-                             MipsFeaturesEnum value) {
-  if (value >= MIPS_LAST_) return false;
-  return kGetters[value](features);
-}
-
-const char* GetMipsFeaturesEnumName(MipsFeaturesEnum value) {
-  if (value >= MIPS_LAST_) return "unknown feature";
-  return kCpuInfoFlags[value];
-}
+#endif  //  defined(CPU_FEATURES_OS_LINUX) || defined(CPU_FEATURES_OS_ANDROID)
+#endif  // CPU_FEATURES_ARCH_MIPS
