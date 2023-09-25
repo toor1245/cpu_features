@@ -86,6 +86,7 @@ typedef struct {
   int amx_bf16 : 1;
   int amx_tile : 1;
   int amx_int8 : 1;
+  int amx_fp16 : 1;
 
   int pclmulqdq : 1;
   int smx : 1;
@@ -108,8 +109,8 @@ typedef struct {
   int fs_rep_stosb : 1;        // Fast short REP STOSB
   int fs_rep_cmpsb_scasb : 1;  // Fast short REP CMPSB/SCASB
 
-  int lam: 1; // Intel Linear Address Mask
-  int uai: 1; // AMD Upper Address Ignore
+  int lam : 1;  // Intel Linear Address Mask
+  int uai : 1;  // AMD Upper Address Ignore
   // Make sure to update X86FeaturesEnum below if you add a field here.
 } X86Features;
 
@@ -254,6 +255,7 @@ typedef enum {
   X86_AMX_BF16,
   X86_AMX_TILE,
   X86_AMX_INT8,
+  X86_AMX_FP16,
   X86_PCLMULQDQ,
   X86_SMX,
   X86_SGX,

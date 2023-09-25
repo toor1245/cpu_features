@@ -450,6 +450,7 @@ static void ParseCpuId(const Leaves* leaves, X86Info* info,
       features->amx_bf16 = IsBitSet(leaf_7.edx, 22);
       features->amx_tile = IsBitSet(leaf_7.edx, 24);
       features->amx_int8 = IsBitSet(leaf_7.edx, 25);
+      features->amx_fp16 = IsBitSet(leaf_7_1.eax, 21);
     }
   } else {
     // When XCR0 is not available (Atom based or older cpus) we need to defer to
@@ -647,6 +648,7 @@ X86Microarchitecture GetX86Microarchitecture(const X86Info* info) {
         }
       case CPUID(0x06, 0x97):
       case CPUID(0x06, 0x9A):
+      case CPUID(0x06, 0xBE):
         // https://en.wikichip.org/wiki/intel/microarchitectures/alder_lake
         return INTEL_ADL;
       case CPUID(0x06, 0xA5):
@@ -817,6 +819,7 @@ X86Microarchitecture GetX86Microarchitecture(const X86Info* info) {
       case CPUID(0x17, 0x60):
       case CPUID(0x17, 0x68):
       case CPUID(0x17, 0x71):
+      case CPUID(0x17, 0x84):
       case CPUID(0x17, 0x90):
       case CPUID(0x17, 0x98):
       case CPUID(0x17, 0xA0):
@@ -833,7 +836,9 @@ X86Microarchitecture GetX86Microarchitecture(const X86Info* info) {
         // https://en.wikichip.org/wiki/amd/microarchitectures/zen_3
         return AMD_ZEN3;
       case CPUID(0x19, 0x10):
+      case CPUID(0x19, 0x11):
       case CPUID(0x19, 0x61):
+      case CPUID(0x19, 0x74):
         // https://en.wikichip.org/wiki/amd/microarchitectures/zen_4
         return AMD_ZEN4;
       default:
@@ -1972,6 +1977,7 @@ CacheInfo GetX86CacheInfo(void) {
   LINE(X86_AMX_BF16, amx_bf16, , , )                       \
   LINE(X86_AMX_TILE, amx_tile, , , )                       \
   LINE(X86_AMX_INT8, amx_int8, , , )                       \
+  LINE(X86_AMX_FP16, amx_fp16, , , )                       \
   LINE(X86_PCLMULQDQ, pclmulqdq, , , )                     \
   LINE(X86_SMX, smx, , , )                                 \
   LINE(X86_SGX, sgx, , , )                                 \
