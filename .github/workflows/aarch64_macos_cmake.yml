@@ -1,4 +1,4 @@
-name: amd64 MacOS CMake
+name: AArch64 MacOS CMake
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 jobs:
   # Building using the github runner environement directly.
   xcode:
-    runs-on: macos-13
+    runs-on: macos-latest
     env:
       CTEST_OUTPUT_ON_FAILURE: 1
     steps:
@@ -18,7 +18,7 @@ jobs:
     - name: Check cmake
       run: cmake --version
     - name: Configure
-      run: cmake -S. -Bbuild -G "Xcode" -DCMAKE_CONFIGURATION_TYPES=Release
+      run: cmake -S. -Bbuild -G "Xcode" -DCMAKE_CONFIGURATION_TYPES=Release -DCMAKE_INSTALL_PREFIX:PATH=destination
     - name: Build
       run: cmake --build build --config Release --target ALL_BUILD -v
     - name: Test
@@ -26,7 +26,7 @@ jobs:
     - name: Install
       run: cmake --build build --config Release --target install -v
   make:
-    runs-on: macos-13
+    runs-on: macos-latest
     env:
       CTEST_OUTPUT_ON_FAILURE: 1
     steps:
@@ -34,7 +34,7 @@ jobs:
     - name: Check cmake
       run: cmake --version
     - name: Configure
-      run: cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release
+      run: cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=destination
     - name: Build
       run: cmake --build build --target all -v
     - name: Test

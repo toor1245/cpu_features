@@ -1,4 +1,4 @@
-name: amd64 MacOS Bazel
+name: AArch64 MacOS Bazel
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 jobs:
   # Building using the github runner environement directly.
   bazel:
-    runs-on: macos-13
+    runs-on: macos-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
